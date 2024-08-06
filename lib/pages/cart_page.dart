@@ -5,7 +5,7 @@ import 'package:mobile_store/pages/layout.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
 import 'package:mobile_store/widgets/order_tile.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -64,22 +64,13 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<void> submit() async {
-    final headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
-
     final body = jsonEncode({
       'total': grandTotal.toString(),
       'details': getOrderMapList(_orders),
     });
-    debugPrint(body);
 
     const url = 'http://192.168.0.8:8080/api/v1/orders';
-    final uri = Uri.parse(url);
-    final response = await http.post(uri, body: body, headers: headers);
-
-    debugPrint(response.statusCode.toString());
+    final response = await Dio().post(url, data: body);
 
     if (response.statusCode == 201 && mounted) {
       showMessage('Checked out!');

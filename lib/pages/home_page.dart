@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_store/models/product.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/product_tile.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -71,11 +71,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<Product>> fetchProducts() async {
-    const url = 'http://192.168.0.8:8080/api/v1/products';
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
+    const url = 'http://192.168.0.9:8080/api/v1/products';
+    // final uri = Uri.parse(url);
+    // final response = await http.get(uri);
 
-    final data = jsonDecode(response.body);
+    final dio = Dio(BaseOptions(responseType: ResponseType.plain));
+    final response = await dio.get(url);
+
+    final data = jsonDecode(response.data);
     final products =
         data.map<Product>((product) => Product.fromJson(product)).toList();
 
