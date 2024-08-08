@@ -63,13 +63,14 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
+  /// Checkout cart
   Future<void> submit() async {
     final body = jsonEncode({
       'total': grandTotal.toString(),
       'details': getOrderMapList(_orders),
     });
 
-    const url = 'http://192.168.0.8:8080/api/v1/orders';
+    const url = 'http://192.168.0.9:8080/api/v1/orders';
     final response = await Dio().post(url, data: body);
 
     if (response.statusCode == 201 && mounted) {
