@@ -1,0 +1,8 @@
+# App Resource Bundle (.arb) directory
+arb-dir: lib/l10n
+
+# Set files template
+template-arb-file: app_en.arb
+
+# Generate localizations files
+output-localization-file: app_localizations.dart

@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_store/models/product.dart';
+import 'package:mobile_store/models/product_repository.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/product_tile.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,14 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Paging variables
-  int page = 1;
-  static const limit = 2;
-  bool hasMore = true;
-
-  // Products list fetching
+  ProductRepository productRepository = ProductRepository();
   late Future<List<Product>> futureProducts;
-  List<Product> currentProducts = [];
 
   final _scrollController = ScrollController();
 
@@ -33,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    futureProducts = fetchProducts();
+    futureProducts = productRepository.fetchProducts();
     _scrollController.addListener(scrollNotify);
   }
 
@@ -44,17 +38,18 @@ class _HomePageState extends State<HomePage> {
       child: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             centerTitle: true,
             title: Column(
               children: [
                 Text(
-                  'Products',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  AppLocalizations.of(context)!.products,
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'All available product in our store',
-                  style: TextStyle(fontSize: 18),
+                  AppLocalizations.of(context)!.home_subtitle,
+                  style: const TextStyle(fontSize: 18),
                 ),
               ],
             ),
@@ -82,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                       } else {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: hasMore
+                          child: productRepository.hasMore
                               ? const Center(child: CircularProgressIndicator())
                               : const Center(
                                   child: Text('No more data to load')),
@@ -100,49 +95,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<List<Product>> fetchProducts() async {
-    final url =
-        'http://192.168.0.9:8080/api/v2/products?page=$page&limit=$limit';
-    // final uri = Uri.parse(url);
-    // final response = await http.get(uri);
-
-    final dio = Dio(BaseOptions(responseType: ResponseType.plain));
-    final response = await dio.get(url);
-
-    final data = jsonDecode(response.data);
-    final products = data['content']
-        .map<Product>((product) => Product.fromJson(product))
-        .toList();
-
-    if (response.statusCode == 200) {
-      if (products.length < limit) {
-        hasMore = false;
-      }
-
-      page++;
-      currentProducts.addAll(products);
-
-      return currentProducts;
-    } else {
-      throw Exception('Failed to load Products');
-    }
-  }
-
   void scrollNotify() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       setState(() {
-        futureProducts = fetchProducts();
+        futureProducts = productRepository.fetchProducts();
       });
     }
   }
 
   Future<void> refresh() async {
     setState(() {
-      page = 1;
-      currentProducts.clear();
-      futureProducts = fetchProducts();
-      hasMore = true;
+      productRepository.productsRefresh();
+      futureProducts = productRepository.fetchProducts();
     });
   }
 }

@@ -65,13 +65,19 @@ class _CartPageState extends State<CartPage> {
 
   /// Checkout cart
   Future<void> submit() async {
+    const token =
+        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzEwOTY3MCwiZXhwIjoxNzIzMTExNDcwfQ.88aoW4zNzbmOMGWknIQ7wcjMqmOhS9vI2Uik_vWkbgo';
     final body = jsonEncode({
       'total': grandTotal.toString(),
+      'paymentMethod': 2,
+      'orderStatus': 1,
       'details': getOrderMapList(_orders),
     });
 
-    const url = 'http://192.168.0.9:8080/api/v1/orders';
-    final response = await Dio().post(url, data: body);
+    final dio = Dio(BaseOptions(headers: {'Authorization': 'Bearer $token'}));
+
+    const url = 'http://192.168.0.9:8080/api/v2/orders';
+    final response = await dio.post(url, data: body);
 
     if (response.statusCode == 201 && mounted) {
       showMessage('Checked out!');

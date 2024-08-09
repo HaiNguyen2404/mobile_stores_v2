@@ -4,6 +4,7 @@ import 'package:mobile_store/models/product.dart';
 import 'package:mobile_store/pages/details_page.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductTile extends StatelessWidget {
   ProductTile({
@@ -87,7 +88,7 @@ class ProductTile extends StatelessWidget {
             '\$${product.price.toString()} USD',
           ),
           Text(
-            '${product.quantity.toString()} units in stock',
+            '${product.quantity.toString()} ${AppLocalizations.of(context)!.remains}',
           ),
           const SizedBox(
             height: 10,
@@ -96,7 +97,7 @@ class ProductTile extends StatelessWidget {
             children: [
               Expanded(
                 child: MyButton(
-                  text: 'Details',
+                  text: AppLocalizations.of(context)!.details,
                   color: Colors.blue,
                   icon: Icons.info,
                   onTap: () => Navigator.of(context).push(
@@ -116,7 +117,7 @@ class ProductTile extends StatelessWidget {
               ),
               Expanded(
                 child: MyButton(
-                  text: 'Order Now',
+                  text: AppLocalizations.of(context)!.order,
                   color: Colors.orange[300],
                   icon: Icons.shopping_cart_rounded,
                   onTap: () {

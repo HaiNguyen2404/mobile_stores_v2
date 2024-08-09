@@ -1,0 +1,35 @@
+{
+    "@@locale": "en",
+    "language": "English",
+    "@language": {
+        "description": "The current language"
+    },
+    "products": "Products",
+    "@products": {
+        "description": "Home page app bar title"
+    },
+    "home_subtitle": "All available product in our store",
+    "@home_subtitle": {
+        "description": "Home page app bar subtitle"
+    },
+    "details": "Details",
+    "@details": {
+        "description": "Details button label"
+    },
+    "order": "Order Now",
+    "@order": {
+        "description": "Order button label"
+    },
+    "cart": "Cart",
+    "@cart": {
+        "description": "Cart"
+    },
+    "cart_subtitle": "All products selected are in your cart",
+    "@cart_subtitle": {
+        "description": "Cart page app bar subtitle"
+    },
+    "remains": "units in stock",
+    "@remains": {
+        "description": "Unit in stock"
+    }
+}

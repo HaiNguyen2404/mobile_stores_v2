@@ -1,0 +1,10 @@
+{
+    "@@locale": "es",
+    "language": "Espanol",
+    "products": "Products",
+    "home_subtitle": "All available product in our store",
+    "details": "Details",
+    "order": "Order Now",
+    "cart": "Cart",
+    "cart_subtitle": "All products selected are in your cart"
+}
