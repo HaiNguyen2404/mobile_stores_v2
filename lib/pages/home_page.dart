@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_store/models/product.dart';
 import 'package:mobile_store/models/product_repository.dart';
@@ -13,8 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ProductRepository productRepository = ProductRepository();
   late Future<List<Product>> futureProducts;
+  ProductRepository productRepository = ProductRepository(
+      dio: Dio(BaseOptions(responseType: ResponseType.plain)));
 
   final _scrollController = ScrollController();
 
@@ -79,8 +81,10 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.symmetric(vertical: 20),
                           child: productRepository.hasMore
                               ? const Center(child: CircularProgressIndicator())
-                              : const Center(
-                                  child: Text('No more data to load')),
+                              : Center(
+                                  child: Text(AppLocalizations.of(context)!
+                                      .no_more_data),
+                                ),
                         );
                       }
                     });

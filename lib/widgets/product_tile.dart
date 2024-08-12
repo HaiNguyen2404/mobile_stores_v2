@@ -124,7 +124,9 @@ class ProductTile extends StatelessWidget {
                     addOrder();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${product.name} added to cart'),
+                        content: Text(
+                          '${product.name} ${AppLocalizations.of(context)!.added_to_cart}',
+                        ),
                         duration: const Duration(seconds: 1),
                       ),
                     );

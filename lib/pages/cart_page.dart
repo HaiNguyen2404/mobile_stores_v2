@@ -6,6 +6,7 @@ import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
 import 'package:mobile_store/widgets/order_tile.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -66,7 +67,7 @@ class _CartPageState extends State<CartPage> {
   /// Checkout cart
   Future<void> submit() async {
     const token =
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzEwOTY3MCwiZXhwIjoxNzIzMTExNDcwfQ.88aoW4zNzbmOMGWknIQ7wcjMqmOhS9vI2Uik_vWkbgo';
+        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzQyMDI2NSwiZXhwIjoxNzIzNDIyMDY1fQ.hS6fPjYIKrbrBYcMkt94JbzjqhJUWEI8vCJN_LlD8wo';
     final body = jsonEncode({
       'total': grandTotal.toString(),
       'paymentMethod': 2,
@@ -80,7 +81,7 @@ class _CartPageState extends State<CartPage> {
     final response = await dio.post(url, data: body);
 
     if (response.statusCode == 201 && mounted) {
-      showMessage('Checked out!');
+      showMessage(AppLocalizations.of(context)!.checked_out);
       clearCart();
       _refreshOrders();
     } else {
@@ -106,12 +107,12 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         backgroundColor: secondaryColor,
         centerTitle: true,
-        title: const Column(
+        title: Column(
           children: [
             Text(
               textAlign: TextAlign.center,
-              "Cart",
-              style: TextStyle(
+              AppLocalizations.of(context)!.cart,
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 30.0,
                 fontWeight: FontWeight.bold,
@@ -119,8 +120,8 @@ class _CartPageState extends State<CartPage> {
             ),
             Text(
               textAlign: TextAlign.center,
-              "All products selected are in your cart",
-              style: TextStyle(
+              AppLocalizations.of(context)!.cart_subtitle,
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 18.0,
               ),
@@ -144,10 +145,10 @@ class _CartPageState extends State<CartPage> {
                   flex: 2,
                   child: Container(
                     padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Product',
+                    child: Text(
+                      AppLocalizations.of(context)!.products,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -159,10 +160,10 @@ class _CartPageState extends State<CartPage> {
                   flex: 1,
                   child: Container(
                     padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Qty',
+                    child: Text(
+                      AppLocalizations.of(context)!.quantity,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -174,10 +175,10 @@ class _CartPageState extends State<CartPage> {
                   flex: 2,
                   child: Container(
                     padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Unit Price',
+                    child: Text(
+                      AppLocalizations.of(context)!.unit_price,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -189,10 +190,10 @@ class _CartPageState extends State<CartPage> {
                   flex: 1,
                   child: Container(
                     padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Price',
+                    child: Text(
+                      AppLocalizations.of(context)!.details_price,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -219,7 +220,7 @@ class _CartPageState extends State<CartPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'Grand Total: \$${grandTotal.toString()}',
+                '${AppLocalizations.of(context)!.grand_total}: \$${grandTotal.toString()}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -234,18 +235,18 @@ class _CartPageState extends State<CartPage> {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 220),
             child: MyButton(
-              text: 'Clear Cart',
+              text: AppLocalizations.of(context)!.clear_cart,
               color: Colors.red,
               icon: Icons.close,
               onTap: () {
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: const Text('Emty cart?'),
+                    title: Text(AppLocalizations.of(context)!.emty_cart),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text('Cancel'),
+                        child: Text(AppLocalizations.of(context)!.cancel),
                       ),
                       TextButton(
                         onPressed: () {
@@ -253,7 +254,7 @@ class _CartPageState extends State<CartPage> {
                           Navigator.pop(context);
                           _refreshOrders();
                         },
-                        child: const Text('Emty'),
+                        child: Text(AppLocalizations.of(context)!.emty),
                       ),
                     ],
                   ),
@@ -265,11 +266,13 @@ class _CartPageState extends State<CartPage> {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 220),
             child: MyButton(
-              text: 'Check Out',
+              text: AppLocalizations.of(context)!.check_out,
               color: Colors.green,
               icon: Icons.shopping_cart,
               onTap: () {
-                _cartBox.isEmpty ? showMessage('Cart is emty!') : submit();
+                _cartBox.isEmpty
+                    ? showMessage(AppLocalizations.of(context)!.cart_is_emty)
+                    : submit();
               },
             ),
           ),
@@ -277,7 +280,7 @@ class _CartPageState extends State<CartPage> {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 220),
             child: MyButton(
-              text: 'Continue Shopping',
+              text: AppLocalizations.of(context)!.continue_shopping,
               color: Colors.green,
               icon: Icons.arrow_back,
               onTap: () {

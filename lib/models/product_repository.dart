@@ -7,10 +7,12 @@ class ProductRepository {
   static const limit = 2;
   bool hasMore = true;
   List<Product> currentProducts = [];
+  Dio dio;
+
+  ProductRepository({required this.dio});
 
   Future<List<Product>> fetchProducts() async {
-    final url =
-        'http://192.168.0.9:8080/api/v2/products?page=$page&limit=$limit';
+    final url = 'http://10.0.2.2:8080/api/v2/products?page=$page&limit=$limit';
 
     final dio = Dio(BaseOptions(responseType: ResponseType.plain));
     final response = await dio.get(url);

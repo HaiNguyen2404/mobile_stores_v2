@@ -31,5 +31,75 @@
     "remains": "units in stock",
     "@remains": {
         "description": "Unit in stock"
-    }
+    },
+    "no_more_data": "No more data to load",
+    "@no_more_data": {
+        "description": "No more data"
+    },
+    "item_code": "Item Code:",
+    "@item_code": {
+        "description": "Item code"
+    },
+    "manufacturer": "Manufacturer: ",
+    "@manufacturer": {
+        "description": "Manufacturer"
+    },
+    "category": "Category: ",
+    "@category": {
+        "description": "Category"
+    },
+    "remains_detail": "Available units in stock: ",
+    "@remains_detail": {
+        "description": "Remains detail"
+    },
+    "price": "Price: ",
+    "@price": {
+        "description": "Price"
+    },
+    "back_button": "Back",
+    "@back_button": {
+        "description": "Back button"
+    },
+    "added_to_cart": "added to cart",
+    "@added_to_cart": {
+        "description": "add to cart snackbar"
+    },
+    "quantity": "Qty",
+    "@quantity": {
+        "description": "Quantity"
+    },
+    "unit_price": "Unit Price",
+    "@unit_price": {
+        "description": "unit price"
+    },
+    "details_price": "Price",
+    "@details_price": {
+        "description": "price"
+    },
+    "grand_total": "Grand Total",
+    "@grand_total": {
+        "description": "grand total"
+    },
+    "clear_cart": "Clear Cart",
+    "@clear_cart": {
+        "description": "Clear cart"
+    },
+    "check_out": "Check out",
+    "@check_out": {
+        "description": "Check out"
+    },
+    "continue_shopping": "Continue Shopping",
+    "@continue_shopping": {
+        "description": "Back to home page"
+    },
+    "emty_cart": "Emty cart?",
+    "@emty_cart": {
+        "description": "emty cart"
+    },
+    "emty": "Emty",
+    "cancel": "Cancel",
+    "cart_is_emty": "Cart is Emty!",
+    "checked_out": "Checked out!",
+    "home": "Home",
+    "account": "Account"
 }

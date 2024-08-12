@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_store/utilities/variables.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Layout extends StatefulWidget {
   const Layout({super.key});
@@ -9,7 +10,6 @@ class Layout extends StatefulWidget {
 }
 
 class _LayoutState extends State<Layout> {
-  String currentPage = 'Home';
   int _selectedIndex = 0;
 
   final PageController _pageController = PageController();
@@ -40,18 +40,18 @@ class _LayoutState extends State<Layout> {
         children: pages,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: AppLocalizations.of(context)!.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_sharp),
-            label: 'Cart',
+            icon: const Icon(Icons.shopping_cart_sharp),
+            label: AppLocalizations.of(context)!.cart,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
+            icon: const Icon(Icons.person),
+            label: AppLocalizations.of(context)!.account,
           ),
         ],
         selectedItemColor: Colors.blue,

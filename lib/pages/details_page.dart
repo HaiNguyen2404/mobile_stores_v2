@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_store/models/product.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailsPage extends StatelessWidget {
   final Function addOrder;
@@ -18,11 +19,11 @@ class DetailsPage extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             centerTitle: true,
             title: Text(
-              'Products',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              AppLocalizations.of(context)!.products,
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
             floating: true,
             expandedHeight: 60,
@@ -63,9 +64,9 @@ class DetailsPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       Row(
                         children: [
-                          const Text(
-                            'Item Code: ',
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.item_code,
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -80,7 +81,7 @@ class DetailsPage extends StatelessWidget {
                               color: Colors.orange[300],
                             ),
                             child: Text(
-                              '15264403828${product.id.toString()}',
+                              product.id.toString(),
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -94,9 +95,9 @@ class DetailsPage extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(
-                              text: 'Manufacturer: ',
-                              style: TextStyle(
+                            TextSpan(
+                              text: AppLocalizations.of(context)!.manufacturer,
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -114,9 +115,9 @@ class DetailsPage extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(
-                              text: 'Category: ',
-                              style: TextStyle(
+                            TextSpan(
+                              text: AppLocalizations.of(context)!.category,
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -134,9 +135,10 @@ class DetailsPage extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(
-                              text: 'Available units in stock: ',
-                              style: TextStyle(
+                            TextSpan(
+                              text:
+                                  AppLocalizations.of(context)!.remains_detail,
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -154,9 +156,9 @@ class DetailsPage extends StatelessWidget {
                       Text.rich(
                         TextSpan(
                           children: [
-                            const TextSpan(
-                              text: 'Price: ',
-                              style: TextStyle(
+                            TextSpan(
+                              text: AppLocalizations.of(context)!.price,
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -179,7 +181,7 @@ class DetailsPage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: MyButton(
-                          text: 'Back',
+                          text: AppLocalizations.of(context)!.back_button,
                           color: Colors.green,
                           icon: Icons.arrow_back,
                           onTap: () => Navigator.pop(context),
@@ -188,14 +190,16 @@ class DetailsPage extends StatelessWidget {
                       const SizedBox(width: 20),
                       Expanded(
                         child: MyButton(
-                          text: 'Order Now',
+                          text: AppLocalizations.of(context)!.order,
                           color: Colors.orange[300],
                           icon: Icons.shopping_cart,
                           onTap: () {
                             addOrder();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('${product.name} added to cart'),
+                                content: Text(
+                                  '${product.name} ${AppLocalizations.of(context)!.added_to_cart}',
+                                ),
                                 duration: const Duration(seconds: 1),
                               ),
                             );
