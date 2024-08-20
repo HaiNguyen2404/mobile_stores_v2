@@ -12,3 +12,11 @@ List<Widget> pages = <Widget>[
   const CartPage(),
   const AccountPage(),
 ];
+
+const String token =
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzYxOTQyOSwiZXhwIjoxNzIzNjIxMjI5fQ.kgNw1AxrDVLnX3vlloNLcwRiIPf06c8pGjMI5fRXCGU';
+
+const List<Locale> locale = [
+  Locale('en'),
+  Locale('vi'),
+];

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
 import 'package:mobile_store/models/product.dart';
 import 'package:dio/dio.dart';
 
@@ -12,15 +13,19 @@ class ProductRepository {
   ProductRepository({required this.dio});
 
   Future<List<Product>> fetchProducts() async {
-    final url =
-        'http://192.168.0.4:8080/api/v2/products?page=$page&limit=$limit';
+    final url = 'http://10.0.2.2:8080/api/v2/products?page=$page&limit=$limit';
     final response = await dio.get(url);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.data);
+      if (data['content'] == null) {
+        throw Exception('Data Error');
+      }
+
       final products = data['content']
           .map<Product>((product) => Product.fromJson(product))
           .toList();
+
       if (products.length < limit) {
         hasMore = false;
       }

@@ -1,11 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mobile_store/cubit/cart_cubit.dart';
+import 'package:mobile_store/cubit/cart_state.dart';
 import 'package:mobile_store/pages/layout.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
 import 'package:mobile_store/widgets/order_tile.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CartPage extends StatefulWidget {
@@ -16,78 +17,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  final _cartBox = Hive.box('cart_box');
-
-  List<Map<dynamic, dynamic>> _orders = [];
-
-  int grandTotal = 0;
-
-  void clearCart() {
-    _cartBox.deleteAll(_cartBox.keys);
-  }
-
-  List<Map<dynamic, dynamic>> getOrders() {
-    return _cartBox.values.toList().cast<Map<dynamic, dynamic>>();
-  }
-
-  Map<dynamic, dynamic> convertToOrderMap(Map<dynamic, dynamic> order) {
-    Map<dynamic, dynamic> orderMap = {};
-    orderMap['productId'] = order['id'];
-    orderMap['quantity'] = order['quantity'];
-    orderMap['unitPrice'] = order['unitPrice'];
-
-    return orderMap;
-  }
-
-  List<Map<dynamic, dynamic>> getOrderMapList(
-      List<Map<dynamic, dynamic>> orders) {
-    List<Map<dynamic, dynamic>> ordersMapList = [];
-    for (Map<dynamic, dynamic> order in orders) {
-      ordersMapList.add(convertToOrderMap(order));
-    }
-
-    return ordersMapList;
-  }
-
-  void _refreshOrders() {
-    setState(() {
-      _orders = getOrders();
-
-      grandTotal = 0;
-
-      if (_orders != []) {
-        for (Map<dynamic, dynamic> order in _orders) {
-          grandTotal =
-              grandTotal + (order['quantity'] * order['unitPrice']) as int;
-        }
-      }
-    });
-  }
-
-  /// Checkout cart
-  Future<void> submit() async {
-    const token =
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzQyMDI2NSwiZXhwIjoxNzIzNDIyMDY1fQ.hS6fPjYIKrbrBYcMkt94JbzjqhJUWEI8vCJN_LlD8wo';
-    final body = jsonEncode({
-      'total': grandTotal.toString(),
-      'paymentMethod': 2,
-      'orderStatus': 1,
-      'details': getOrderMapList(_orders),
-    });
-
-    final dio = Dio(BaseOptions(headers: {'Authorization': 'Bearer $token'}));
-
-    const url = 'http://192.168.0.9:8080/api/v2/orders';
-    final response = await dio.post(url, data: body);
-
-    if (response.statusCode == 201 && mounted) {
-      showMessage(AppLocalizations.of(context)!.checked_out);
-      clearCart();
-      _refreshOrders();
-    } else {
-      showMessage('Check out Failed');
-    }
-  }
+  final cartBox = Hive.box('cart_box');
 
   void showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -98,7 +28,7 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    _refreshOrders();
+    getItems();
   }
 
   @override
@@ -204,29 +134,47 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           const Divider(height: 1),
-          ListView.builder(
-            itemCount: _orders.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return OrderTile(
-                order: _orders[index],
-                refresh: _refreshOrders,
-              );
+          BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              if (state is CartInitial) {
+                return const Center(
+                  child: Text('There nothing!'),
+                );
+              } else if (state is CartError) {
+                return Center(
+                  child: Text(state.error),
+                );
+              } else if (state is CartItemLoaded) {
+                return Column(
+                  children: [
+                    ListView.builder(
+                      itemCount: state.cartList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return OrderTile(
+                          order: state.cartList[index],
+                        );
+                      },
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          '${AppLocalizations.of(context)!.grand_total}: \$${state.grandTotal}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox();
             },
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 10),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                '${AppLocalizations.of(context)!.grand_total}: \$${grandTotal.toString()}',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
           ),
           const Divider(
             height: 1,
@@ -250,9 +198,8 @@ class _CartPageState extends State<CartPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          clearCart();
+                          clearAllItems();
                           Navigator.pop(context);
-                          _refreshOrders();
                         },
                         child: Text(AppLocalizations.of(context)!.emty),
                       ),
@@ -270,9 +217,9 @@ class _CartPageState extends State<CartPage> {
               color: Colors.green,
               icon: Icons.shopping_cart,
               onTap: () {
-                _cartBox.isEmpty
+                cartBox.isEmpty
                     ? showMessage(AppLocalizations.of(context)!.cart_is_emty)
-                    : submit();
+                    : checkout();
               },
             ),
           ),
@@ -292,5 +239,22 @@ class _CartPageState extends State<CartPage> {
         ],
       ),
     );
+  }
+
+  getItems() {
+    context.read<CartCubit>().loadCart();
+  }
+
+  clearAllItems() {
+    context.read<CartCubit>().removeItem();
+  }
+
+  checkout() async {
+    var response = await context.read<CartCubit>().checkout();
+    if (response == null && mounted) {
+      showMessage(AppLocalizations.of(context)!.checked_out);
+    } else {
+      showMessage('Failed');
+    }
   }
 }

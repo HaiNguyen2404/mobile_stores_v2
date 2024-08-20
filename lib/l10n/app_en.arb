@@ -101,5 +101,6 @@
     "cart_is_emty": "Cart is Emty!",
     "checked_out": "Checked out!",
     "home": "Home",
-    "account": "Account"
+    "account": "Account",
+    "account_page": "Account Page"
 }

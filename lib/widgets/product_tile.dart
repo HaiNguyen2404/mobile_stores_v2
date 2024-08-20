@@ -1,56 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mobile_store/cubit/cart_cubit.dart';
 import 'package:mobile_store/models/product.dart';
 import 'package:mobile_store/pages/details_page.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductTile extends StatelessWidget {
-  ProductTile({
+  const ProductTile({
     super.key,
     required this.product,
   });
 
   final Product product;
-
-  final _cartBox = Hive.box('cart_box');
-
-  void writeData(int key, Map<String, dynamic> value) {
-    _cartBox.put(key, value);
-  }
-
-  Map<dynamic, dynamic> getProductMap() {
-    return _cartBox.get(product.id);
-  }
-
-  List<int> getProductId() {
-    return _cartBox.keys.toList().cast<int>();
-  }
-
-  void addOrder() {
-    List<int> productIds = getProductId();
-    if (productIds.contains(product.id)) {
-      int quantity = getProductMap()['quantity'];
-      quantity++;
-      writeData(product.id, {
-        'id': product.id,
-        'name': product.name,
-        'quantity': quantity,
-        'unitPrice': product.price,
-      });
-    } else {
-      writeData(
-        product.id,
-        {
-          'id': product.id,
-          'name': product.name,
-          'quantity': 1,
-          'unitPrice': product.price,
-        },
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +67,6 @@ class ProductTile extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => DetailsPage(
                         product: product,
-                        addOrder: () {
-                          addOrder();
-                        },
                       ),
                     ),
                   ),
@@ -121,7 +81,7 @@ class ProductTile extends StatelessWidget {
                   color: Colors.orange[300],
                   icon: Icons.shopping_cart_rounded,
                   onTap: () {
-                    addOrder();
+                    addToCart(context, product);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -138,5 +98,9 @@ class ProductTile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  addToCart(BuildContext context, Product product) {
+    context.read<CartCubit>().addOrder(product);
   }
 }

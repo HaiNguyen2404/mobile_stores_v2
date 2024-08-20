@@ -29,5 +29,6 @@
     "cart_is_emty": "Không có sản phẩm trong giỏ!",
     "checked_out": "Đã đặt hàng!",
     "home": "Trang chủ",
-    "account": "Tài khoản"
+    "account": "Tài khoản",
+    "account_page": "Trang tài khoản"
 }

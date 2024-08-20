@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mobile_store/cubit/cart_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderTile extends StatelessWidget {
   final Map<dynamic, dynamic> order;
-  final Function refresh;
-  OrderTile({
+  const OrderTile({
     super.key,
     required this.order,
-    required this.refresh,
   });
-
-  final _cartBox = Hive.box('cart_box');
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +36,8 @@ class OrderTile extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  _cartBox.delete(order['id']);
+                                  removeItem(context, order['id']);
                                   Navigator.pop(context);
-                                  refresh();
                                 },
                                 child: const Text('Remove'),
                               ),
@@ -108,5 +104,9 @@ class OrderTile extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  removeItem(BuildContext context, int index) {
+    context.read<CartCubit>().removeItem(index: index);
   }
 }
