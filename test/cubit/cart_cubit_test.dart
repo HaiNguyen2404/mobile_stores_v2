@@ -69,6 +69,18 @@ void main() {
       expect(state.grandTotal, 0);
     });
 
+    test(
+        'emits CartItemLoaded with empty cart on checkout when cart is already empty',
+        () {
+      when(mockBox.values).thenReturn([]);
+
+      cartCubit.checkout();
+
+      verifyNever(cartCubit.dio.post(any()));
+      final state = cartCubit.state as CartItemLoaded;
+      expect(state.cartList.isEmpty, true);
+    });
+
     test('emits CartError when Hive box is unavailable', () {
       // Arrange: Simulate Hive box being unavailable by throwing an exception when accessing the box
       when(mockBox.values).thenThrow(HiveError('Box is unavailable'));

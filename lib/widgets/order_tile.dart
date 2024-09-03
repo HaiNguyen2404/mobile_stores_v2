@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_store/cubit/cart_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_store/widgets/price.dart';
 
 class OrderTile extends StatelessWidget {
   final Map<dynamic, dynamic> order;
@@ -78,10 +79,7 @@ class OrderTile extends StatelessWidget {
               flex: 2,
               child: Container(
                 padding: const EdgeInsets.all(10),
-                child: Text(
-                  order['unitPrice'].toString(),
-                  textAlign: TextAlign.center,
-                ),
+                child: Price(price: order['unitPrice']),
               ),
             ),
             Flexible(
@@ -89,10 +87,7 @@ class OrderTile extends StatelessWidget {
               flex: 1,
               child: Container(
                 padding: const EdgeInsets.all(10),
-                child: Text(
-                  '${order['quantity'] * order['unitPrice']}',
-                  textAlign: TextAlign.center,
-                ),
+                child: Price(price: (order['quantity'] * order['unitPrice'])),
               ),
             ),
           ],

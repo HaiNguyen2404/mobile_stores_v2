@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_store/cubit/cart_cubit.dart';
+import 'package:mobile_store/cubit/local_cubit.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,6 +32,7 @@ class _LayoutState extends State<Layout> {
   @override
   void initState() {
     super.initState();
+    context.read<LocalCubit>().checkLocal();
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:mobile_store/cubit/cart_cubit.dart';
 import 'package:mobile_store/cubit/cart_state.dart';
 import 'package:mobile_store/pages/layout.dart';
 import 'package:mobile_store/utilities/variables.dart';
+import 'package:mobile_store/widgets/grand_total.dart';
 import 'package:mobile_store/widgets/my_button.dart';
 import 'package:mobile_store/widgets/order_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -156,20 +157,7 @@ class _CartPageState extends State<CartPage> {
                         );
                       },
                     ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          '${AppLocalizations.of(context)!.grand_total}: \$${state.grandTotal}',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
+                    GrandTotal(grandTotal: state.grandTotal),
                   ],
                 );
               }

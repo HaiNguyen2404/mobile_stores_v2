@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_store/cubit/cart_cubit.dart';
+import 'package:mobile_store/cubit/local_cubit.dart';
+import 'package:mobile_store/cubit/local_state.dart';
 import 'package:mobile_store/models/product.dart';
 import 'package:mobile_store/pages/details_page.dart';
 import 'package:mobile_store/utilities/variables.dart';
@@ -47,8 +49,16 @@ class ProductTile extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            '\$${product.price.toString()} USD',
+          BlocBuilder<LocalCubit, LocalState>(
+            builder: (context, state) {
+              if (state is English) {
+                return Text('${product.price} USD');
+              } else if (state is Vietnamese) {
+                return Text('${product.price * state.currencyValue} đ');
+              } else {
+                return const Center(child: Text('Product price load failure'));
+              }
+            },
           ),
           Text(
             '${product.quantity.toString()} ${AppLocalizations.of(context)!.remains}',

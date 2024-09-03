@@ -16,7 +16,10 @@ void main() async {
 
   // open the boxes
   await Hive.openBox('cart_box');
-
+  Box localBox = await Hive.openBox('local_box');
+  if (localBox.isEmpty) {
+    localBox.put("language", "en");
+  }
   runApp(const MyApp());
 }
 
@@ -32,7 +35,8 @@ class MyApp extends StatelessWidget {
                 cartBox: Hive.box('cart_box'),
                 dio: Dio(
                     BaseOptions(headers: {'Authorization': 'Bearer $token'})))),
-        BlocProvider<LocalCubit>(create: (context) => LocalCubit()),
+        BlocProvider<LocalCubit>(
+            create: (context) => LocalCubit(localBox: Hive.box("local_box"))),
       ],
       child: BlocBuilder<LocalCubit, LocalState>(
         builder: (_, state) {
@@ -44,7 +48,7 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            locale: Locale(state.local),
+            locale: Locale(Hive.box('local_box').get("language")),
             supportedLocales: locale,
             home: const Layout(),
           );

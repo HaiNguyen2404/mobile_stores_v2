@@ -4,16 +4,11 @@ class LocalState {
 }
 
 class English extends LocalState {
-  double currencyValue;
-
-  English({
-    required super.local,
-    required this.currencyValue,
-  });
+  English({required super.local});
 }
 
 class Vietnamese extends LocalState {
-  double currencyValue;
+  final double currencyValue;
 
   Vietnamese({
     required super.local,
