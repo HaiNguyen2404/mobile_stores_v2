@@ -5,10 +5,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobile_store/cubit/cart_cubit.dart';
 import 'package:mobile_store/cubit/local_cubit.dart';
 import 'package:mobile_store/cubit/local_state.dart';
+import 'package:mobile_store/features/home/presentation/cubit/product_cubit.dart';
 import 'package:mobile_store/pages/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_store/utilities/variables.dart';
+import 'package:mobile_store/core/di/injections.dart' as di;
 
 void main() async {
   // initialize hive
@@ -20,6 +22,8 @@ void main() async {
   if (localBox.isEmpty) {
     localBox.put("language", "en");
   }
+  di.init();
+
   runApp(const MyApp());
 }
 
@@ -37,6 +41,7 @@ class MyApp extends StatelessWidget {
                     BaseOptions(headers: {'Authorization': 'Bearer $token'})))),
         BlocProvider<LocalCubit>(
             create: (context) => LocalCubit(localBox: Hive.box("local_box"))),
+        BlocProvider(create: (context) => di.locator<ProductCubit>()),
       ],
       child: BlocBuilder<LocalCubit, LocalState>(
         builder: (_, state) {

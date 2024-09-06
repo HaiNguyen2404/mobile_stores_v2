@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_store/cubit/cart_cubit.dart';
 import 'package:mobile_store/cubit/local_cubit.dart';
 import 'package:mobile_store/cubit/local_state.dart';
-import 'package:mobile_store/features/home/domain/entities/product.dart';
 import 'package:mobile_store/pages/details_page.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../domain/entities/product.dart';
 
 class ProductTile extends StatelessWidget {
   const ProductTile({

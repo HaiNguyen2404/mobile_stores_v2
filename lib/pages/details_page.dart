@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_store/cubit/cart_cubit.dart';
-import 'package:mobile_store/models/product.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:mobile_store/widgets/my_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../features/home/domain/entities/product.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage({
@@ -218,6 +218,6 @@ class DetailsPage extends StatelessWidget {
   }
 
   addToCart(BuildContext context, Product product) {
-    context.read<CartCubit>().addOrder(product);
+    // context.read<CartCubit>().addOrder(product);
   }
 }
