@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobile_store/core/localization/presentation/local_cubit/local_cubit.dart';
 import 'package:mobile_store/features/home/presentation/cubit/product_cubit.dart';
-import 'package:mobile_store/pages/layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mobile_store/utilities/variables.dart';
+import 'package:mobile_store/shared/constants/variables.dart';
 import 'package:mobile_store/core/di/injections.dart' as di;
 
 import 'features/cart/presentation/cart_cubit/cart_cubit.dart';
+import 'shared/presentation/layout.dart';
 
 void main() async {
   // initialize hive

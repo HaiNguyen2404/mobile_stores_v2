@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_store/utilities/variables.dart';
+import 'package:mobile_store/shared/constants/variables.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/localization/presentation/local_cubit/local_cubit.dart';

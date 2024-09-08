@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_store/pages/layout.dart';
-import 'package:mobile_store/utilities/variables.dart';
+import 'package:mobile_store/shared/constants/variables.dart';
 import 'package:mobile_store/features/cart/presentation/widgets/grand_total.dart';
 import 'package:mobile_store/features/cart/presentation/widgets/order_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../shared/presentation/layout.dart';
 import '../../../../shared/presentation/my_button.dart';
 import '../cart_cubit/cart_cubit.dart';
 

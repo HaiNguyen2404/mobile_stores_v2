@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:mobile_store/features/home/data/models/product_model.dart';
-import 'package:mobile_store/utilities/variables.dart';
+import 'package:mobile_store/shared/constants/variables.dart';
 
 class ApiService {
   static const baseUrl = "http://10.0.2.2:8080/api/v2";

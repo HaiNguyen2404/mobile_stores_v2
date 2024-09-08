@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_store/features/cart/presentation/cart_cubit/cart_cubit.dart';
 import 'package:mobile_store/features/home/presentation/pages/details_page.dart';
 import 'package:mobile_store/shared/presentation/my_button.dart';
-import 'package:mobile_store/utilities/variables.dart';
+import 'package:mobile_store/shared/constants/variables.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
