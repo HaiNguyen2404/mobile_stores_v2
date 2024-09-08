@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mobile_store/cubit/local_cubit.dart';
-import 'package:mobile_store/cubit/local_state.dart';
+
+import '../../../../core/localization/presentation/local_cubit/local_cubit.dart';
 
 class GrandTotal extends StatelessWidget {
   const GrandTotal({super.key, required this.grandTotal});
@@ -26,7 +26,7 @@ class GrandTotal extends StatelessWidget {
             builder: (context, state) {
               if (state is Vietnamese) {
                 return Text(
-                  '${grandTotal * state.currencyValue} đ',
+                  '${grandTotal * state.convertedValue} đ',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

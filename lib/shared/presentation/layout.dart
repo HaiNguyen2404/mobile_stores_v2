@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_store/cubit/local_cubit.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../core/localization/presentation/local_cubit/local_cubit.dart';
 
 class Layout extends StatefulWidget {
   const Layout({super.key});
@@ -31,7 +32,7 @@ class _LayoutState extends State<Layout> {
   @override
   void initState() {
     super.initState();
-    context.read<LocalCubit>().checkLocal();
+    context.read<LocalCubit>().checkLocalState();
   }
 
   @override

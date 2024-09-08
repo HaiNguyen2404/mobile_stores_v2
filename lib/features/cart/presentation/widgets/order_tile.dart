@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_store/cubit/cart_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_store/widgets/price.dart';
+import 'package:mobile_store/features/cart/domain/entities/order.dart';
+import 'package:mobile_store/features/cart/presentation/cart_cubit/cart_cubit.dart';
+import 'package:mobile_store/features/cart/presentation/widgets/price.dart';
 
 class OrderTile extends StatelessWidget {
-  final Map<dynamic, dynamic> order;
+  final Order order;
   const OrderTile({
     super.key,
     required this.order,
@@ -29,7 +30,7 @@ class OrderTile extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: Text('Remove ${order['name']} from cart?'),
+                            title: Text('Remove ${order.name} from cart?'),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -37,7 +38,7 @@ class OrderTile extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  removeItem(context, order['id']);
+                                  removeItem(context, order);
                                   Navigator.pop(context);
                                 },
                                 child: const Text('Remove'),
@@ -53,7 +54,7 @@ class OrderTile extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        order['name'],
+                        order.name,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -68,7 +69,7 @@ class OrderTile extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 child: Text(
-                  order['quantity'].toString(),
+                  order.quantity.toString(),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -79,7 +80,7 @@ class OrderTile extends StatelessWidget {
               flex: 2,
               child: Container(
                 padding: const EdgeInsets.all(10),
-                child: Price(price: order['unitPrice']),
+                child: Price(price: order.price),
               ),
             ),
             Flexible(
@@ -87,7 +88,7 @@ class OrderTile extends StatelessWidget {
               flex: 1,
               child: Container(
                 padding: const EdgeInsets.all(10),
-                child: Price(price: (order['quantity'] * order['unitPrice'])),
+                child: Price(price: (order.quantity * order.price)),
               ),
             ),
           ],
@@ -101,7 +102,7 @@ class OrderTile extends StatelessWidget {
     );
   }
 
-  removeItem(BuildContext context, int index) {
-    context.read<CartCubit>().removeItem(index: index);
+  removeItem(BuildContext context, Order order) {
+    context.read<CartCubit>().deleteAnOrder(order);
   }
 }

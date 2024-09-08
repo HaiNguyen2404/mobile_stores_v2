@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_store/features/account/account_page.dart';
 import 'package:mobile_store/features/home/presentation/pages/home_page.dart';
-import 'package:mobile_store/pages/account_page.dart';
-import 'package:mobile_store/pages/cart_page.dart';
+import 'package:mobile_store/features/cart/presentation/pages/cart_page.dart';
 
 // Theme colors
 const Color secondaryColor = Color.fromARGB(255, 238, 238, 238);
@@ -14,7 +14,7 @@ List<Widget> pages = <Widget>[
 ];
 
 const String token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyMzYxOTQyOSwiZXhwIjoxNzIzNjIxMjI5fQ.kgNw1AxrDVLnX3vlloNLcwRiIPf06c8pGjMI5fRXCGU';
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyNTcxODM5MCwiZXhwIjoxNzI1NzIwMTkwfQ.IDWN05j2Ud1vVMVhcVwtU3MHN6N51RXtf48SUFFWYs4';
 
 const List<Locale> locale = [
   Locale('en'),

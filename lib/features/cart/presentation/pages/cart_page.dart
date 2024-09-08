@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mobile_store/cubit/cart_cubit.dart';
-import 'package:mobile_store/cubit/cart_state.dart';
 import 'package:mobile_store/pages/layout.dart';
 import 'package:mobile_store/utilities/variables.dart';
-import 'package:mobile_store/widgets/grand_total.dart';
-import 'package:mobile_store/widgets/my_button.dart';
-import 'package:mobile_store/widgets/order_tile.dart';
+import 'package:mobile_store/features/cart/presentation/widgets/grand_total.dart';
+import 'package:mobile_store/features/cart/presentation/widgets/order_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../../shared/presentation/my_button.dart';
+import '../cart_cubit/cart_cubit.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -18,8 +17,6 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  final cartBox = Hive.box('cart_box');
-
   void showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
@@ -29,7 +26,7 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    getItems();
+    getOrders();
   }
 
   @override
@@ -137,27 +134,27 @@ class _CartPageState extends State<CartPage> {
           const Divider(height: 1),
           BlocBuilder<CartCubit, CartState>(
             builder: (context, state) {
-              if (state is CartInitial) {
+              if (state is CartLoading) {
                 return const Center(
                   child: Text('There nothing!'),
                 );
               } else if (state is CartError) {
                 return Center(
-                  child: Text(state.error),
+                  child: Text(state.message),
                 );
-              } else if (state is CartItemLoaded) {
+              } else if (state is CartLoaded) {
                 return Column(
                   children: [
                     ListView.builder(
-                      itemCount: state.cartList.length,
+                      itemCount: state.cart.orderList.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return OrderTile(
-                          order: state.cartList[index],
+                          order: state.cart.orderList[index],
                         );
                       },
                     ),
-                    GrandTotal(grandTotal: state.grandTotal),
+                    GrandTotal(grandTotal: state.cart.grandTotal()),
                   ],
                 );
               }
@@ -198,18 +195,26 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           const SizedBox(height: 30),
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 220),
-            child: MyButton(
-              text: AppLocalizations.of(context)!.check_out,
-              color: Colors.green,
-              icon: Icons.shopping_cart,
-              onTap: () {
-                cartBox.isEmpty
-                    ? showMessage(AppLocalizations.of(context)!.cart_is_emty)
-                    : checkout();
-              },
-            ),
+          BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              return ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 220),
+                child: MyButton(
+                  text: AppLocalizations.of(context)!.check_out,
+                  color: Colors.green,
+                  icon: Icons.shopping_cart,
+                  onTap: () {
+                    if (state is CartLoaded) {
+                      if (state.cart.orderList.isEmpty) {
+                        showMessage('Cart is empty!');
+                      } else {
+                        checkout();
+                      }
+                    }
+                  },
+                ),
+              );
+            },
           ),
           const SizedBox(height: 30),
           ConstrainedBox(
@@ -229,17 +234,17 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  getItems() {
+  getOrders() {
     context.read<CartCubit>().loadCart();
   }
 
   clearAllItems() {
-    context.read<CartCubit>().removeItem();
+    context.read<CartCubit>().deleteOrders();
   }
 
   checkout() async {
-    var response = await context.read<CartCubit>().checkout();
-    if (response == null && mounted) {
+    var response = await context.read<CartCubit>().checkoutAndClearCart();
+    if (response && mounted) {
       showMessage(AppLocalizations.of(context)!.checked_out);
     } else {
       showMessage('Failed');

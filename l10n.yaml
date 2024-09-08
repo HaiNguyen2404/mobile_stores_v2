@@ -1,5 +1,5 @@
 # App Resource Bundle (.arb) directory
-arb-dir: lib/l10n
+arb-dir: lib/core/localization/l10n
 
 # Set files template
 template-arb-file: app_en.arb

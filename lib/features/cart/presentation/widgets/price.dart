@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_store/cubit/local_cubit.dart';
-import 'package:mobile_store/cubit/local_state.dart';
+
+import '../../../../core/localization/presentation/local_cubit/local_cubit.dart';
 
 class Price extends StatelessWidget {
   const Price({super.key, required this.price});
@@ -15,7 +15,7 @@ class Price extends StatelessWidget {
         builder: (context, state) {
           if (state is Vietnamese) {
             return Text(
-              '${price * state.currencyValue}',
+              '${price * state.convertedValue}',
               textAlign: TextAlign.center,
             );
           } else {

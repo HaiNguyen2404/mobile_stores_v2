@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_store/cubit/local_cubit.dart';
-import 'package:mobile_store/cubit/local_state.dart';
-import 'package:mobile_store/pages/details_page.dart';
+import 'package:mobile_store/features/cart/presentation/cart_cubit/cart_cubit.dart';
+import 'package:mobile_store/features/home/presentation/pages/details_page.dart';
+import 'package:mobile_store/shared/presentation/my_button.dart';
 import 'package:mobile_store/utilities/variables.dart';
-import 'package:mobile_store/widgets/my_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/localization/presentation/local_cubit/local_cubit.dart';
 import '../../domain/entities/product.dart';
 
 class ProductTile extends StatelessWidget {
@@ -54,7 +54,7 @@ class ProductTile extends StatelessWidget {
               if (state is English) {
                 return Text('${product.price} USD');
               } else if (state is Vietnamese) {
-                return Text('${product.price * state.currencyValue} đ');
+                return Text('${product.price * state.convertedValue} đ');
               } else {
                 return const Center(child: Text('Product price load failure'));
               }
@@ -111,6 +111,6 @@ class ProductTile extends StatelessWidget {
   }
 
   addToCart(BuildContext context, Product product) {
-    // context.read<CartCubit>().addOrder(product);
+    context.read<CartCubit>().addToCart(product);
   }
 }

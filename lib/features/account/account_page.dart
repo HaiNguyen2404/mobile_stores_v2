@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mobile_store/cubit/local_cubit.dart';
-import 'package:mobile_store/cubit/local_state.dart';
 import 'package:mobile_store/utilities/variables.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../core/localization/presentation/local_cubit/local_cubit.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -14,7 +13,14 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  Box localBox = Hive.box("local_box");
+  late String initLocal;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<LocalCubit>().checkLocalState();
+    initLocal = context.read<LocalCubit>().checkLocal();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,7 @@ class _AccountPageState extends State<AccountPage> {
           BlocBuilder<LocalCubit, LocalState>(
             builder: (context, state) {
               return DropdownButton(
-                value: state.local,
+                value: initLocal,
                 items: const [
                   DropdownMenuItem(
                     value: 'en',
@@ -42,9 +48,10 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ],
                 onChanged: (value) {
-                  state.local = value!;
-                  localBox.put("language", value);
-                  context.read<LocalCubit>().changeLanguage();
+                  changeLocal(value!);
+                  setState(() {
+                    initLocal = value;
+                  });
                 },
               );
             },
@@ -55,5 +62,9 @@ class _AccountPageState extends State<AccountPage> {
         child: Text(AppLocalizations.of(context)!.account_page),
       ),
     );
+  }
+
+  changeLocal(String local) {
+    context.read<LocalCubit>().changeLocalState(local);
   }
 }

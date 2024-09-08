@@ -1,3 +1,4 @@
+import 'package:mobile_store/features/cart/data/models/order_model.dart';
 import 'package:mobile_store/features/home/domain/entities/product.dart';
 
 class ProductModel {
@@ -62,6 +63,15 @@ class ProductModel {
       category: json['category'],
       condition: json['condition'],
       image: json['image'],
+    );
+  }
+
+  OrderModel toOrder() {
+    return OrderModel(
+      id: id,
+      name: name,
+      price: price,
+      quantity: 1,
     );
   }
 }
