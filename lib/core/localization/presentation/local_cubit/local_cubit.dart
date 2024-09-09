@@ -12,7 +12,7 @@ class LocalCubit extends Cubit<LocalState> {
     this.getLocal,
     this.changeLocal,
     this.getConvertedValue,
-  ) : super(InitialState());
+  ) : super(InitialState('en'));
 
   checkLocalState() async {
     String local = getLocal.execute();
