@@ -7,7 +7,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile_store/shared/constants/variables.dart';
 import 'package:mobile_store/core/di/injections.dart' as di;
-
 import 'features/cart/presentation/cart_cubit/cart_cubit.dart';
 import 'shared/presentation/layout.dart';
 

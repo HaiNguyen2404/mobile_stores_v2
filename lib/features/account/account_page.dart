@@ -49,7 +49,7 @@ class _AccountPageState extends State<AccountPage> {
                 ],
                 onChanged: (value) {
                   changeLocal(value!);
-                  print(state is English);
+                  print(value);
                   setState(() {
                     initLocal = value;
                   });
