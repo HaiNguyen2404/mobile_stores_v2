@@ -1,27 +1,17 @@
 import 'package:mobile_store/features/cart/data/models/order_model.dart';
 import 'package:mobile_store/features/home/domain/entities/product.dart';
 
-class ProductModel {
-  int id;
-  String name;
-  int price;
-  int quantity;
-  String description;
-  String manufacturer;
-  String category;
-  String condition;
-  String image;
-
+class ProductModel extends Product {
   ProductModel({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.quantity,
-    required this.description,
-    required this.manufacturer,
-    required this.category,
-    required this.condition,
-    required this.image,
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.quantity,
+    required super.description,
+    required super.manufacturer,
+    required super.category,
+    required super.condition,
+    required super.image,
   });
 
   factory ProductModel.fromEntity(Product entity) {
@@ -35,20 +25,6 @@ class ProductModel {
       category: entity.category,
       condition: entity.condition,
       image: entity.image,
-    );
-  }
-
-  Product toEntity() {
-    return Product(
-      id: id,
-      name: name,
-      price: price,
-      quantity: quantity,
-      description: description,
-      manufacturer: manufacturer,
-      category: category,
-      condition: condition,
-      image: image,
     );
   }
 
