@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_store/features/authentication/presentation/cubit/auth_cubit.dart';
+import 'package:mobile_store/features/authentication/presentation/pages/login_page.dart';
 import 'package:mobile_store/shared/constants/variables.dart';
 import 'package:mobile_store/features/cart/presentation/widgets/grand_total.dart';
 import 'package:mobile_store/features/cart/presentation/widgets/order_tile.dart';
@@ -195,7 +197,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           const SizedBox(height: 30),
-          BlocBuilder<CartCubit, CartState>(
+          BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               return ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 220),
@@ -203,13 +205,18 @@ class _CartPageState extends State<CartPage> {
                   text: AppLocalizations.of(context)!.check_out,
                   color: Colors.green,
                   icon: Icons.shopping_cart,
-                  onTap: () {
-                    if (state is CartLoaded) {
-                      if (state.cart.orderList.isEmpty) {
+                  onTap: () async {
+                    if (state is AuthLoaded) {
+                      if (checkCartEmty()) {
                         showMessage('Cart is empty!');
                       } else {
-                        checkout();
+                        checkout(state.user.token);
                       }
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
                     }
                   },
                 ),
@@ -242,12 +249,16 @@ class _CartPageState extends State<CartPage> {
     context.read<CartCubit>().deleteOrders();
   }
 
-  checkout() async {
-    var response = await context.read<CartCubit>().checkoutAndClearCart();
+  checkout(String token) async {
+    var response = await context.read<CartCubit>().checkoutAndClearCart(token);
     if (response && mounted) {
       showMessage(AppLocalizations.of(context)!.checked_out);
     } else {
       showMessage('Failed');
     }
+  }
+
+  bool checkCartEmty() {
+    return context.read<CartCubit>().checkCartEmty();
   }
 }

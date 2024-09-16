@@ -42,7 +42,7 @@ class CartRepoImpl implements CartRepo {
   }
 
   @override
-  Future<bool> checkout() async {
-    return await orderDataSource.checkout();
+  Future<bool> checkout(String token) async {
+    return await orderDataSource.checkout(token);
   }
 }

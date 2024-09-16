@@ -9,7 +9,6 @@ class RemoteData {
   Future<double> getConvertAmount(String local) async {
     if (local != 'en') {
       try {
-        String localCurrency = 'vnd';
         final response = await dio.get(endpoint);
 
         if (response.statusCode == 200) {
