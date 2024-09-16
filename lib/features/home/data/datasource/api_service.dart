@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:mobile_store/features/home/data/models/product_model.dart';
-import 'package:mobile_store/shared/constants/variables.dart';
 
 class ApiService {
   static const baseUrl = "http://10.0.2.2:8080/api/v2";
@@ -23,7 +22,7 @@ class ApiService {
     }
   }
 
-  Future<bool> checkout(String body) async {
+  Future<bool> checkout(String body, String token) async {
     final dio = Dio(BaseOptions(headers: {'Authorization': 'Bearer $token'}));
     final response = await dio.post('$baseUrl/orders', data: body);
 

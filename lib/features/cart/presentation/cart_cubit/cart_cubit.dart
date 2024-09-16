@@ -32,6 +32,14 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+  bool checkCartEmty() {
+    Cart cart = getcart.execute();
+    if (cart.orderList.isEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   addToCart(Product product) {
     try {
       addOrder.execute(product);
@@ -59,9 +67,9 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<bool> checkoutAndClearCart() async {
+  Future<bool> checkoutAndClearCart(String token) async {
     try {
-      final result = await checkout.execute();
+      final result = await checkout.execute(token);
       if (result) {
         deleteOrders();
         return result;

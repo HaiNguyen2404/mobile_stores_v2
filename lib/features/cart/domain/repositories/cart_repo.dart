@@ -7,5 +7,5 @@ abstract class CartRepo {
   void addOrder(Product product);
   void deleteOrder(Order order);
   void clearCart();
-  Future<bool> checkout();
+  Future<bool> checkout(String token);
 }

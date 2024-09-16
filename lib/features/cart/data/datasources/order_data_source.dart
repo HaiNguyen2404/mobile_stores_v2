@@ -8,7 +8,7 @@ abstract class OrderDataSource {
   void deleteOrder(OrderModel order);
   void addOrder(OrderModel order);
   void clearAllOrders();
-  Future<bool> checkout();
+  Future<bool> checkout(String token);
 }
 
 class OrderDataSourceImpl implements OrderDataSource {
@@ -47,7 +47,7 @@ class OrderDataSourceImpl implements OrderDataSource {
   }
 
   @override
-  Future<bool> checkout() async {
+  Future<bool> checkout(String token) async {
     int total = 0;
 
     if (orders.isEmpty) {
@@ -65,7 +65,7 @@ class OrderDataSourceImpl implements OrderDataSource {
       'details': orders.map((order) => order.toJson()).toList()
     });
 
-    final result = await apiService.checkout(body);
+    final result = await apiService.checkout(body, token);
 
     return result;
   }

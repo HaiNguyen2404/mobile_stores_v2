@@ -1,6 +1,5 @@
 import 'package:mobile_store/features/home/data/datasource/product_data_source.dart';
 import 'package:mobile_store/features/home/data/models/product_model.dart';
-import 'package:mobile_store/features/home/domain/entities/product.dart';
 import 'package:mobile_store/features/home/domain/repository/product_repo.dart';
 
 class ProductRepoImpl implements ProductRepo {

@@ -49,7 +49,7 @@ class Checkout {
 
   Checkout(this.cartRepo);
 
-  Future<bool> execute() async {
-    return await cartRepo.checkout();
+  Future<bool> execute(String token) async {
+    return await cartRepo.checkout(token);
   }
 }
