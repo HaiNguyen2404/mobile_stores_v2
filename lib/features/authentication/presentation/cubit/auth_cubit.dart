@@ -23,18 +23,9 @@ class AuthCubit extends Cubit<AuthState> {
     String password,
   ) async {
     try {
-      final result = await login.execute(username, password);
+      await login.execute(username, password);
 
-      if (result == "Success") {
-        User? user = await getCurrentUser.execute();
-        if (user != null) {
-          emit(AuthLoaded(user));
-        } else {
-          emit(AuthInitial());
-        }
-      } else {
-        emit(AuthError(result));
-      }
+      checkUserState();
     } on Exception catch (_) {
       emit(AuthError("Invalid username or password"));
     }

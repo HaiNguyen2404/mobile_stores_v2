@@ -1,48 +1,61 @@
 import 'package:dio/dio.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobile_store/features/authentication/data/models/user_model.dart';
+import 'package:mobile_store/shared/constants/variables.dart';
 
 abstract class AuthDataSource {
-  Future<String> authenticate(String username, String password);
+  Future<void> authenticate(String username, String password);
   Future<UserModel?> getCurrentUser();
   Future<String> registerUser(String name, String username, String password);
   void logout();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  String authToken = "";
+  final tokenBox = Hive.box('token_box');
 
   @override
-  Future<String> authenticate(String username, String password) async {
+  Future<void> authenticate(String username, String password) async {
     final dio = Dio();
-    const url = 'http://10.0.2.2:8080/api/v2/users/login';
+    const url = '$baseUrl/users/login';
     final response = await dio.post(
       url,
       data: {'username': username, 'password': password},
     );
 
     if (response.statusCode == 200) {
-      authToken = response.data;
-      return "Login Success";
+      tokenBox.put(1, response.data);
     } else {
-      return "Invalid username or password";
+      throw Exception("Login Failed");
     }
   }
 
   @override
   Future<UserModel?> getCurrentUser() async {
+    if (!tokenBox.keys.contains(1)) {
+      tokenBox.put(1, '');
+    }
+    String authToken = tokenBox.get(1);
+
     final dio = Dio(BaseOptions(
       headers: {"Authorization": "Bearer $authToken"},
     ));
-    const url = 'http://10.0.2.2:8080/api/v2/users/auth/me';
-    if (authToken != "") {
-      final response = await dio.get(url);
-
-      if (response.statusCode == 200) {
-        return UserModel(name: response.data['name'], token: authToken);
-      }
+    const url = '$baseUrl/users/auth/me';
+    if (authToken == '') {
       return null;
     }
-    return null;
+
+    final response = await dio.get(url);
+
+    if (response.statusCode != 200) {
+      return null;
+    }
+
+    if (response.data.keys.contains('error')) {
+      logout();
+      return null;
+    }
+
+    return UserModel(name: response.data['name'], token: authToken);
   }
 
   @override
@@ -52,7 +65,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     String password,
   ) async {
     final dio = Dio();
-    const url = 'http://10.0.2.2:8080/api/v2/users/register';
+    const url = '$baseUrl/users/register';
     const existed = 'Username already exists.';
 
     final data = {
@@ -65,7 +78,7 @@ class AuthDataSourceImpl implements AuthDataSource {
 
     if (response.statusCode == 200) {
       if (response.data == existed) {
-        return existed;
+        throw Exception();
       } else {
         return "Register Successful";
       }
@@ -76,6 +89,6 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   void logout() {
-    authToken = '';
+    tokenBox.put(1, '');
   }
 }

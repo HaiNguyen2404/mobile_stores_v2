@@ -206,18 +206,18 @@ class _CartPageState extends State<CartPage> {
                   color: Colors.green,
                   icon: Icons.shopping_cart,
                   onTap: () async {
-                    if (state is AuthLoaded) {
-                      if (checkCartEmty()) {
-                        showMessage('Cart is empty!');
-                      } else {
-                        checkout(state.user.token);
-                      }
-                    } else {
+                    if (state is! AuthLoaded) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => LoginPage()),
                       );
+                      return;
                     }
+                    if (checkCartEmty()) {
+                      showMessage('Card is Empty!');
+                      return;
+                    }
+                    checkout(state.user.token);
                   },
                 ),
               );

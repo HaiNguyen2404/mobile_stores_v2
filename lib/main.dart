@@ -16,6 +16,7 @@ void main() async {
   await Hive.initFlutter();
 
   // open the boxes
+  await Hive.openBox('token_box');
   final localBox = await Hive.openBox('local_box');
   if (localBox.get(0) == null) {
     localBox.put(0, 'en');
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          locale: Locale(Hive.box('local_box').get(0)),
+          locale: Locale(context.read<LocalCubit>().checkLocal()),
           supportedLocales: locale,
           home: const Layout(),
         );

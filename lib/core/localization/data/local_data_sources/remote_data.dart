@@ -7,21 +7,21 @@ class RemoteData {
   double unitValue = 1;
 
   Future<double> getConvertAmount(String local) async {
-    if (local != 'en') {
-      try {
-        final response = await dio.get(endpoint);
-
-        if (response.statusCode == 200) {
-          unitValue = double.parse(
-            response.data['usd']['vnd'].toStringAsFixed(1),
-          );
-        }
-        return unitValue;
-      } on Exception catch (e) {
-        throw Exception('Failed to get convert value: $e');
-      }
-    } else {
+    if (local == 'en') {
       return 1;
+    }
+
+    try {
+      final response = await dio.get(endpoint);
+
+      if (response.statusCode == 200) {
+        unitValue = double.parse(
+          response.data['usd']['vnd'].toStringAsFixed(1),
+        );
+      }
+      return unitValue;
+    } on Exception catch (e) {
+      throw Exception('Failed to get convert value: $e');
     }
   }
 }

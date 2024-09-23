@@ -8,10 +8,9 @@ class AuthRepoImpl implements AuthRepo {
   AuthRepoImpl(this.authDataSource);
 
   @override
-  Future<String> login(String username, String password) async {
+  Future<void> login(String username, String password) async {
     try {
-      String result = await authDataSource.authenticate(username, password);
-      return result;
+      await authDataSource.authenticate(username, password);
     } catch (e) {
       throw Exception('Login Failed: $e');
     }

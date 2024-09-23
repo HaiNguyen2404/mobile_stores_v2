@@ -22,7 +22,6 @@ class _AccountPageState extends State<AccountPage> {
     super.initState();
     context.read<LocalCubit>().checkLocalState();
     initLocal = context.read<LocalCubit>().checkLocal();
-    context.read<AuthCubit>().checkUserState();
   }
 
   @override

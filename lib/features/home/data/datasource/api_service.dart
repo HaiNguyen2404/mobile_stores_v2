@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:mobile_store/features/home/data/models/product_model.dart';
+import 'package:mobile_store/shared/constants/variables.dart';
 
 class ApiService {
-  static const baseUrl = "http://10.0.2.2:8080/api/v2";
   static const limit = 2;
 
   Future<List<ProductModel>> fetchProducts(int page) async {

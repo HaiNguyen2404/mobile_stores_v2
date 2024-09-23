@@ -4,6 +4,7 @@ import 'package:mobile_store/shared/constants/variables.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/localization/presentation/local_cubit/local_cubit.dart';
+import '../../features/authentication/presentation/cubit/auth_cubit.dart';
 
 class Layout extends StatefulWidget {
   const Layout({super.key});
@@ -33,6 +34,7 @@ class _LayoutState extends State<Layout> {
   void initState() {
     super.initState();
     context.read<LocalCubit>().checkLocalState();
+    context.read<AuthCubit>().checkUserState();
   }
 
   @override
