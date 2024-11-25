@@ -5,6 +5,11 @@ import 'package:mobile_store/core/localization/data/repositories/local_repo_impl
 import 'package:mobile_store/core/localization/domain/repositories/local_repo.dart';
 import 'package:mobile_store/core/localization/domain/usecases/local_usecases.dart';
 import 'package:mobile_store/core/localization/presentation/local_cubit/local_cubit.dart';
+import 'package:mobile_store/features/authentication/data/datasources/auth_datasource.dart';
+import 'package:mobile_store/features/authentication/data/repository/auth_repo_impl.dart';
+import 'package:mobile_store/features/authentication/domain/repository/auth_repo.dart';
+import 'package:mobile_store/features/authentication/domain/usecases/auth_usecases.dart';
+import 'package:mobile_store/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:mobile_store/features/cart/data/datasources/order_data_source.dart';
 import 'package:mobile_store/features/cart/data/repositories/cart_repo_impl.dart';
 import 'package:mobile_store/features/cart/domain/repositories/cart_repo.dart';
@@ -75,4 +80,19 @@ Future<void> init() async {
 
   locator.registerLazySingleton(() => LocalData());
   locator.registerLazySingleton(() => RemoteData());
+
+  locator.registerFactory(() => AuthCubit(
+        locator<Login>(),
+        locator<Logout>(),
+        locator<GetCurrentUser>(),
+        locator<Register>(),
+      ));
+
+  locator.registerLazySingleton(() => Login(locator()));
+  locator.registerLazySingleton(() => Logout(locator()));
+  locator.registerLazySingleton(() => GetCurrentUser(locator()));
+  locator.registerLazySingleton(() => Register(locator()));
+
+  locator.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(locator()));
+  locator.registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl());
 }

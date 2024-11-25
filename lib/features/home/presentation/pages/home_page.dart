@@ -13,10 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // late Future<List<Product>> futureProducts;
-  // ProductRepository productRepository = ProductRepository(
-  //     dio: Dio(BaseOptions(responseType: ResponseType.plain)));
-
   final _scrollController = ScrollController();
 
   @override
@@ -28,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // futureProducts = productRepository.fetchProducts();
     refresh();
     _scrollController.addListener(scrollNotify);
   }
@@ -56,45 +51,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             floating: true,
-            // flexibleSpace: Placeholder(),
             expandedHeight: 80,
             backgroundColor: secondaryColor,
           ),
-          // FutureBuilder(
-          //   future: futureProducts,
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasError) {
-          //       return SliverToBoxAdapter(
-          //           child: Text('Retrieve Failed ${snapshot.error}'));
-          //     } else if (snapshot.hasData) {
-          //       final List<Product> products = snapshot.data!;
-
-          //       return SliverList.builder(
-          //           itemCount: products.length + 1,
-          //           itemBuilder: (context, index) {
-          //             if (index < products.length) {
-          //               return ProductTile(
-          //                 product: products[index],
-          //               );
-          //             } else {
-          //               return Padding(
-          //                 padding: const EdgeInsets.symmetric(vertical: 20),
-          //                 child: productRepository.hasMore
-          //                     ? const Center(child: CircularProgressIndicator())
-          //                     : Center(
-          //                         child: Text(AppLocalizations.of(context)!
-          //                             .no_more_data),
-          //                       ),
-          //               );
-          //             }
-          //           });
-          //     } else {
-          //       return const SliverToBoxAdapter(
-          //           child: Center(child: CircularProgressIndicator()));
-          //     }
-          //   },
-          // ),
-
           BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
               if (state is LoadingState) {
@@ -102,7 +61,9 @@ class _HomePageState extends State<HomePage> {
                   child: Center(child: CircularProgressIndicator()),
                 );
               } else if (state is EmptyState) {
-                return const Center(child: Text('Empty'));
+                // ignore: prefer_const_constructors
+                return SliverToBoxAdapter(
+                    child: const Center(child: Text('Empty')));
               } else if (state is LoadedProductState) {
                 return SliverList.builder(
                   itemCount: state.products.length + 1,
@@ -145,11 +106,11 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> refresh() async {
     context.read<ProductCubit>().refreshProducts();
-    fetchProducts();
+    await fetchProducts();
   }
 
-  fetchProducts() {
-    context.read<ProductCubit>().fetchProducts();
+  Future<void> fetchProducts() {
+    return context.read<ProductCubit>().fetchProducts();
   }
 
   bool hasMore() {
