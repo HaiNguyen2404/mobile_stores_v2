@@ -27,15 +27,16 @@ class ProductTile extends StatelessWidget {
           width: 2,
         ),
         borderRadius: BorderRadius.circular(10),
-        // shape: BoxShape.circle,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(
-            product.image,
-            fit: BoxFit.fitHeight,
-          ),
+          product.image != null
+              ? Image.network(
+                  product.image!,
+                  fit: BoxFit.fitHeight,
+                )
+              : const Icon(Icons.person),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(

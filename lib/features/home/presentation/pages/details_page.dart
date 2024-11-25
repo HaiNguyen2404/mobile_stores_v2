@@ -36,10 +36,12 @@ class DetailsPage extends StatelessWidget {
                 Container(
                   height: 350,
                   padding: const EdgeInsets.all(20),
-                  child: Image.network(
-                    product.image,
-                    fit: BoxFit.fitHeight,
-                  ),
+                  child: product.image != null
+                      ? Image.network(
+                          product.image!,
+                          fit: BoxFit.fitHeight,
+                        )
+                      : const Icon(Icons.person),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

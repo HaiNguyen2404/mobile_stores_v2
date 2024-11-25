@@ -41,9 +41,17 @@ class _LayoutState extends State<Layout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        key: const PageStorageKey<String>('page_view'),
         controller: _pageController,
         onPageChanged: _onPageChanged,
-        children: pages,
+        children: pages
+            .map(
+              (page) => KeyedSubtree(
+                key: ValueKey(page.runtimeType),
+                child: page,
+              ),
+            )
+            .toList(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [

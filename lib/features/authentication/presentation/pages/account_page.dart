@@ -1,3 +1,4 @@
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_store/features/authentication/presentation/cubit/auth_cubit.dart';
 import 'package:mobile_store/features/authentication/presentation/pages/login_page.dart';
@@ -63,6 +64,12 @@ class _AccountPageState extends State<AccountPage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      FirebaseInAppMessaging.instance.triggerEvent('something');
+                    },
+                    child: const Text('Test'),
+                  ),
                   const Text('You are not signed in'),
                   ElevatedButton(
                     onPressed: () => Navigator.push(
@@ -84,7 +91,7 @@ class _AccountPageState extends State<AccountPage> {
                     onPressed: () {
                       context.read<AuthCubit>().logoutAndLoadState();
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Log out")));
+                          const SnackBar(content: Text("Logged out")));
                     },
                     child: const Text('Logout'),
                   ),

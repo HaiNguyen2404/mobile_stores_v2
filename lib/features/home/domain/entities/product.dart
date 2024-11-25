@@ -7,7 +7,7 @@ class Product {
   final String manufacturer;
   final String category;
   final String condition;
-  final String image;
+  final String? image;
 
   Product({
     required this.id,
@@ -18,6 +18,6 @@ class Product {
     required this.manufacturer,
     required this.category,
     required this.condition,
-    required this.image,
+    this.image,
   });
 }
