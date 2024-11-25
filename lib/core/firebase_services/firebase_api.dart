@@ -14,7 +14,6 @@ class FirebaseApi {
 
     // fetch FCM token for this device
     final fcmToken = await _firebaseMessaging.getToken();
-    print('Token: $fcmToken');
 
     // Foreground message handler
     // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
